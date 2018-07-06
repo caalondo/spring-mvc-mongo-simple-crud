@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "clients")
-public class ClientModel {
+public class ClientModel implements ITypeListResponse {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
