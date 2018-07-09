@@ -1,5 +1,9 @@
 package com.projects.clientscrud.utilities;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -20,6 +24,13 @@ public final class FileUtilities {
             System.out.println("Error creating temporally file '" + fileName + "." + fileExtension + "'");
             return null;
         }
+    }
+
+    public static boolean checkIfFileExists (String objectKey) {
+        AmazonS3 s3 = GlobalUtilities.createAWSClient();
+        String bucketName = GlobalUtilities.bucketName;
+
+        return s3.doesObjectExist(bucketName, objectKey);
     }
 
 }

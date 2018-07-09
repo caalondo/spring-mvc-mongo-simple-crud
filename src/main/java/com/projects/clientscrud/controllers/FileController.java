@@ -15,15 +15,17 @@ import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RestController
 @RequestMapping(value = "/file-aws")
 public class FileController {
 
     @RequestMapping(value = {"/{objectKey}"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String readFile (@PathVariable String objectKey) {
+    public String readFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
 
         AmazonS3 s3 = GlobalUtilities.createAWSClient();
 
@@ -46,6 +48,7 @@ public class FileController {
                     "File read correctly!",
                     jsonBody
             );
+            httpResponse.setStatus(HttpServletResponse.SC_CREATED);
             return jsonResponse.toString();
         } catch (Exception e) {
             JSONObject jsonBody = new JSONObject();
@@ -55,47 +58,70 @@ public class FileController {
                     "Error getting object '" + objectKey + "' from bucket " + bucketName + "! ",
                     jsonBody
             );
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return jsonResponse.toString();
         }
     }
 
-    @RequestMapping(value = "/{objectKey}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String createFile (@PathVariable String objectKey) {
+    @RequestMapping(
+            value = "/{objectKey}",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String createFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
 
         AmazonS3 s3 = GlobalUtilities.createAWSClient();
         String bucketName = GlobalUtilities.bucketName;
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        String textFile = "=== FILE TEST ===\n\nFile creation date: " + sdf;
 
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String currentDatetime = sdf.format(date);
+
+        String textFile = "=== FILE TEST ===\n\nFile creation date: " + currentDatetime;
         File file = FileUtilities.createSimpleFile(objectKey, ".txt", textFile);
 
-        try {
-            s3.putObject(new PutObjectRequest(bucketName, objectKey, file));
-            JSONObject jsonFile = new JSONObject();
-            jsonFile.put("objectKey", objectKey);
-            jsonFile.put("name", objectKey + ".txt");
-            jsonFile.put("bucket", bucketName);
-            jsonFile.put("extension", ".txt");
+        if (FileUtilities.checkIfFileExists(objectKey + ".txt")) {
+            try {
+                s3.putObject(new PutObjectRequest(bucketName, objectKey, file));
+                JSONObject jsonFile = new JSONObject();
+                jsonFile.put("objectKey", objectKey);
+                jsonFile.put("name", objectKey + ".txt");
+                jsonFile.put("bucket", bucketName);
+                jsonFile.put("extension", ".txt");
 
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("file", jsonFile);
+                JSONObject jsonResponse = GlobalUtilities.createGeneralResponse(
+                        201,
+                        "File '" + objectKey + ".txt' created successfully",
+                        jsonBody
+                );
+                httpResponse.setStatus(HttpServletResponse.SC_CREATED);
+                return jsonResponse.toString();
+            } catch (Exception e) {
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("error", e);
+                JSONObject jsonResponse = GlobalUtilities.createGeneralResponse(
+                        500,
+                        "Error crating object '" + objectKey + "' at bucket " + bucketName + "!",
+                        jsonBody
+                );
+                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                return jsonResponse.toString();
+            }
+        } else {
             JSONObject jsonBody = new JSONObject();
-            jsonBody.put("file", jsonFile);
             JSONObject jsonResponse = GlobalUtilities.createGeneralResponse(
-                    201,
-                    "File '" + objectKey + ".txt' created successfully",
+                    400,
+                    "File '" + objectKey + "' already exists at bucket '" + bucketName + "'! Consider change file name",
                     jsonBody
             );
-            return jsonResponse.toString();
-        } catch (Exception e) {
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("error", e);
-            JSONObject jsonResponse = GlobalUtilities.createGeneralResponse(
-                    500,
-                    "Error crating object '" + objectKey + "' at bucket " + bucketName + "!",
-                    jsonBody
-            );
+            httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return jsonResponse.toString();
         }
+
+
     }
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.PUT)
