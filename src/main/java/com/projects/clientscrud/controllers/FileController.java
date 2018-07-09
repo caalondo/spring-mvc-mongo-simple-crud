@@ -1,11 +1,6 @@
 package com.projects.clientscrud.controllers;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
@@ -21,7 +16,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,7 +36,7 @@ public class FileController {
             S3ObjectInputStream stream = testObject.getObjectContent();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
 
-            String contentFile = "";
+            String contentFile;
             try {
                 String temp;
                 StringBuilder sb = new StringBuilder();

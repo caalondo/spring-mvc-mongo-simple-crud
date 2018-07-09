@@ -10,6 +10,7 @@ import com.projects.clientscrud.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import sun.security.krb5.internal.MethodData;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -22,7 +23,7 @@ public class ClientController {
     @Autowired
     ClientRepository clientRepository;
 
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getAllClients (HttpServletResponse http_resp) {
         List<ITypeListResponse> listR = Lists.newArrayList(clientRepository.findAll());
         ApiResponse res = new ApiResponse("200", "OK", listR);
