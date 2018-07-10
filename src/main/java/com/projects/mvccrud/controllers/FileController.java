@@ -1,12 +1,12 @@
-package com.projects.clientscrud.controllers;
+package com.projects.mvccrud.controllers;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.projects.clientscrud.utilities.FileUtilities;
-import com.projects.clientscrud.utilities.GlobalUtilities;
+import com.projects.mvccrud.utilities.FileUtilities;
+import com.projects.mvccrud.utilities.GlobalUtilities;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

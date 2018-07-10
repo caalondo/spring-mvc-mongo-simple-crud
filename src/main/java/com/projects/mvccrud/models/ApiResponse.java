@@ -1,4 +1,4 @@
-package com.projects.clientscrud.models;
+package com.projects.mvccrud.models;
 
 import java.util.List;
 

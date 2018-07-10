@@ -1,4 +1,4 @@
-package com.projects.clientscrud.utilities;
+package com.projects.mvccrud.utilities;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;

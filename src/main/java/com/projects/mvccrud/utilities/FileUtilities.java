@@ -1,8 +1,6 @@
-package com.projects.clientscrud.utilities;
+package com.projects.mvccrud.utilities;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ListObjectsRequest;
-import com.amazonaws.services.s3.model.ObjectListing;
 
 import java.io.File;
 import java.io.FileOutputStream;

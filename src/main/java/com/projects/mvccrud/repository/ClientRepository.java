@@ -1,6 +1,6 @@
-package com.projects.clientscrud.repository;
+package com.projects.mvccrud.repository;
 
-import com.projects.clientscrud.models.ClientModel;
+import com.projects.mvccrud.models.ClientModel;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ClientRepository extends CrudRepository <ClientModel, Long> {}

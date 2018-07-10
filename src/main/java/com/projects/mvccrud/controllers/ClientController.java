@@ -1,16 +1,15 @@
-package com.projects.clientscrud.controllers;
+package com.projects.mvccrud.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.projects.clientscrud.models.ApiResponse;
-import com.projects.clientscrud.models.ClientModel;
-import com.projects.clientscrud.models.ITypeListResponse;
-import com.projects.clientscrud.repository.ClientRepository;
+import com.projects.mvccrud.models.ApiResponse;
+import com.projects.mvccrud.models.ClientModel;
+import com.projects.mvccrud.models.ITypeListResponse;
+import com.projects.mvccrud.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import sun.security.krb5.internal.MethodData;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
