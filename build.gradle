@@ -31,6 +31,10 @@ dependencyManagement {
     }
 }
 
+bootJar {
+    launchScript()
+}
+
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-web")
