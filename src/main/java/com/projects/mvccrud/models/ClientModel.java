@@ -1,23 +1,32 @@
 package com.projects.mvccrud.models;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "clients")
+
+@Document(collection = "clients")
 public class ClientModel implements ITypeListResponse {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    private String id;
     private String name;
     private int age;
     private String email;
 
-    public long getId() {
+    public ClientModel(){}
+
+    public ClientModel(String id, String name, int age, String email) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

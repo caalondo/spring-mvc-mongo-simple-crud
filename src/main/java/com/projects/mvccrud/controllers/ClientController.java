@@ -38,7 +38,7 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Optional<ClientModel> getClientById (@PathVariable long id) {
+    public Optional<ClientModel> getClientById (@PathVariable String id) {
         return clientRepository.findById(id);
     }
 
@@ -53,7 +53,7 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable String id) {
         clientRepository.deleteById(id);
     }
 }
