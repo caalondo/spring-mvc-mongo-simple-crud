@@ -1,12 +1,12 @@
-package com.projects.mvccrud.controllers;
+package co.com.bancolombia.mvccrud.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.projects.mvccrud.models.ApiResponse;
-import com.projects.mvccrud.models.ClientModel;
-import com.projects.mvccrud.models.ITypeListResponse;
-import com.projects.mvccrud.repository.ClientRepository;
+import co.com.bancolombia.mvccrud.models.ApiResponse;
+import co.com.bancolombia.mvccrud.models.ClientModel;
+import co.com.bancolombia.mvccrud.models.ITypeListResponse;
+import co.com.bancolombia.mvccrud.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

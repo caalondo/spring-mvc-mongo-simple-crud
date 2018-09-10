@@ -1,6 +1,6 @@
-package com.projects.mvccrud.repository;
+package co.com.bancolombia.mvccrud.repositories;
 
-import com.projects.mvccrud.models.ClientModel;
+import co.com.bancolombia.mvccrud.models.ClientModel;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ClientRepository extends CrudRepository <ClientModel, String> {}

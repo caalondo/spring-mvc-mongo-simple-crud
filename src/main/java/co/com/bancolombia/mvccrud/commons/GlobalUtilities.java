@@ -1,4 +1,4 @@
-package com.projects.mvccrud.utilities;
+package co.com.bancolombia.mvccrud.commons;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;

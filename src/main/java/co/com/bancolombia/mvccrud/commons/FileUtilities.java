@@ -1,4 +1,4 @@
-package com.projects.mvccrud.utilities;
+package co.com.bancolombia.mvccrud.commons;
 
 import com.amazonaws.services.s3.AmazonS3;
 

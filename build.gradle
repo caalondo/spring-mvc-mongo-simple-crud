@@ -31,8 +31,10 @@ dependencyManagement {
     }
 }
 
-bootJar {
-    launchScript()
+test {
+    testLogging {
+        events "passed", "skipped", "failed", "standardError"
+    }
 }
 
 dependencies {
@@ -44,5 +46,5 @@ dependencies {
     compile('com.google.guava:guava:25.1-jre')
     compile('com.amazonaws:aws-java-sdk-s3')
     compile(group: 'org.json', name: 'json', version: '20180130')
-    testCompile("junit:junit")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }

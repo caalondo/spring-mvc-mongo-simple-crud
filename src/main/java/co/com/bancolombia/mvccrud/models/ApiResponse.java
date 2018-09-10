@@ -1,4 +1,4 @@
-package com.projects.mvccrud.models;
+package co.com.bancolombia.mvccrud.models;
 
 import java.util.List;
 
