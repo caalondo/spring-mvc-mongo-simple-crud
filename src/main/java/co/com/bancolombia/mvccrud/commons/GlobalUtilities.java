@@ -8,16 +8,35 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.json.JSONObject;
 
-public final class GlobalUtilities {
+public class GlobalUtilities {
 
+    private ProfileCredentialsProvider provider;
     public static final String bucketName = "test-c4rl05";
 
-    public static AmazonS3 createAWSClient () {
+    public GlobalUtilities (ProfileCredentialsProvider provider) {
+        this.provider = provider;
+    }
+
+    void setCredentials (ProfileCredentialsProvider provider) {
+        this.provider = provider;
+    }
+
+    public String getBucketName () {
+        return bucketName;
+    }
+
+    public AmazonS3 createAWSClient () {
         // Getting aws credentials
         AWSCredentials credentials;
         try {
-            credentials = new ProfileCredentialsProvider().getCredentials();
+            System.out.println("Running try/except =>> ");
+
+            credentials = provider.getCredentials(); // Mock!!!
+
+            System.out.println("CREDENTIALS ID: " + credentials.getAWSAccessKeyId());
+            System.out.println("CREDENTIALS KEY: " + credentials.getAWSSecretKey());
         } catch (Exception e) {
+            System.out.println("ERROOOOOOOOOOOOOOORRR!!!!");
             throw new AmazonClientException("Error getting aws credentials: " + e);
         }
         return AmazonS3ClientBuilder.standard()

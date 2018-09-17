@@ -1,12 +1,14 @@
 package co.com.bancolombia.mvccrud.controllers;
 
 import co.com.bancolombia.mvccrud.commons.GlobalUtilities;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import co.com.bancolombia.mvccrud.commons.FileUtilities;
+import jdk.nashorn.internal.objects.Global;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +28,8 @@ public class FileController {
     @RequestMapping(value = {"/{objectKey}"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String readFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
 
-        AmazonS3 s3 = GlobalUtilities.createAWSClient();
+        GlobalUtilities globalUtilities = new GlobalUtilities(new ProfileCredentialsProvider());
+        AmazonS3 s3 = globalUtilities.createAWSClient();
 
         // Getting object from S3 bucket
         String bucketName = GlobalUtilities.bucketName;
@@ -95,7 +98,8 @@ public class FileController {
     )
     public String createFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
 
-        AmazonS3 s3 = GlobalUtilities.createAWSClient();
+        GlobalUtilities globalUtilities = new GlobalUtilities(new ProfileCredentialsProvider());
+        AmazonS3 s3 = globalUtilities.createAWSClient();
         String bucketName = GlobalUtilities.bucketName;
 
         Date date = new Date();
@@ -148,7 +152,8 @@ public class FileController {
 
     @RequestMapping(value = "/{objectKey}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public String replaceFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
-        AmazonS3 s3 = GlobalUtilities.createAWSClient();
+        GlobalUtilities globalUtilities = new GlobalUtilities(new ProfileCredentialsProvider());
+        AmazonS3 s3 = globalUtilities.createAWSClient();
         String bucketName = GlobalUtilities.bucketName;
 
         Date date = new Date();
@@ -202,7 +207,8 @@ public class FileController {
     @RequestMapping(value = "/{objectKey}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String deleteFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
 
-        AmazonS3 s3 = GlobalUtilities.createAWSClient();
+        GlobalUtilities globalUtilities = new GlobalUtilities(new ProfileCredentialsProvider());
+        AmazonS3 s3 = globalUtilities.createAWSClient();
         String bucketName = GlobalUtilities.bucketName;
 
         if (FileUtilities.checkIfFileExists(objectKey)) {

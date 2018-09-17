@@ -25,10 +25,11 @@ public final class FileUtilities {
     }
 
     public static boolean checkIfFileExists (String objectKey) {
-        AmazonS3 s3 = GlobalUtilities.createAWSClient();
-        String bucketName = GlobalUtilities.bucketName;
-
-        return s3.doesObjectExist(bucketName, objectKey);
+//        AmazonS3 s3 = GlobalUtilities.createAWSClient();
+////        String bucketName = GlobalUtilities.bucketName;
+////
+////        return s3.doesObjectExist(bucketName, objectKey);
+        return true;
     }
 
 }
