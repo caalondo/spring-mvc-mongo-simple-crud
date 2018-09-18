@@ -17,26 +17,12 @@ public class GlobalUtilities {
         this.provider = provider;
     }
 
-    void setCredentials (ProfileCredentialsProvider provider) {
-        this.provider = provider;
-    }
-
-    public String getBucketName () {
-        return bucketName;
-    }
-
     public AmazonS3 createAWSClient () {
         // Getting aws credentials
         AWSCredentials credentials;
         try {
-            System.out.println("Running try/except =>> ");
-
-            credentials = provider.getCredentials(); // Mock!!!
-
-            System.out.println("CREDENTIALS ID: " + credentials.getAWSAccessKeyId());
-            System.out.println("CREDENTIALS KEY: " + credentials.getAWSSecretKey());
+            credentials = provider.getCredentials();
         } catch (Exception e) {
-            System.out.println("ERROOOOOOOOOOOOOOORRR!!!!");
             throw new AmazonClientException("Error getting aws credentials: " + e);
         }
         return AmazonS3ClientBuilder.standard()
