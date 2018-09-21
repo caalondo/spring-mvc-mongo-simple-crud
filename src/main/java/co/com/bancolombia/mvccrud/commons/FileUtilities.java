@@ -8,11 +8,11 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-public final class FileUtilities {
+public class FileUtilities {
 
-    public static File createSimpleFile (String fileName, String fileExtension, String text) {
+    public File createSimpleFile (String fileName, String fileExtension, String text) {
         try {
-            System.out.println("Try createSimpleFile");
+            System.out.println("=> createSimpleFile => fileName: " + fileName + " => fileExtension: " + fileExtension);
             File file = File.createTempFile(fileName, fileExtension);
             System.out.println("File: " + file);
             file.deleteOnExit();

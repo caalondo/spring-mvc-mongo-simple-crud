@@ -107,7 +107,8 @@ public class FileController {
         String currentDatetime = sdf.format(date);
 
         String textFile = "=== FILE TEST ===\n\nFile creation date: " + currentDatetime;
-        File file = FileUtilities.createSimpleFile(objectKey, ".txt", textFile);
+        FileUtilities fileUtilities = new FileUtilities();
+        File file = fileUtilities.createSimpleFile(objectKey, ".txt", textFile);
 
         if (!FileUtilities.checkIfFileExists(objectKey)) {
             try {
@@ -161,7 +162,8 @@ public class FileController {
         String currentDatetime = sdf.format(date);
 
         String textFile = "=== FILE TEST ===\n\nFile creation date: " + currentDatetime;
-        File file = FileUtilities.createSimpleFile(objectKey, ".txt", textFile);
+        FileUtilities fileUtilities = new FileUtilities();
+        File file = fileUtilities.createSimpleFile(objectKey, ".txt", textFile);
 
         if (FileUtilities.checkIfFileExists(objectKey)) {
             try {
