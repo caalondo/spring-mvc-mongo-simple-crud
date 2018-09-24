@@ -12,9 +12,10 @@ public class FileUtilities {
 
     public File createSimpleFile (String fileName, String fileExtension, String text) {
         try {
-            System.out.println("=> createSimpleFile => fileName: " + fileName + " => fileExtension: " + fileExtension);
             File file = File.createTempFile(fileName, fileExtension);
-            System.out.println("File: " + file);
+
+            System.out.println("FILE: " + file);
+
             file.deleteOnExit();
 
             Writer writer = new OutputStreamWriter(new FileOutputStream(file));

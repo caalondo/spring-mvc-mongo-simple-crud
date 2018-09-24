@@ -14,8 +14,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
 
 import java.io.File;
 
@@ -37,19 +37,35 @@ public class TestFileUtilities {
 
     @Test
     public void testCreateSimpleFile_exceptionCreateTempFile () {
-        System.out.println("[1]");
         fileUtilities = new FileUtilities();
-        File fileFake = new File("/c/");
-
         PowerMockito.mockStatic(File.class);
+
         try {
-            PowerMockito.when(File.createTempFile(anyString(), anyString())).thenReturn(fileFake);
-            File response = File.createTempFile("Test", "txt");
-            System.out.println("RESP: " + response);
+            PowerMockito.when(File.createTempFile(anyString(), anyString())).thenThrow(Exception.class);
         } catch (Exception e) {
             System.out.println("Error!");
         }
 
-        fileUtilities.createSimpleFile("Hola", "txt", "Test 1!!!");
+        File response = fileUtilities.createSimpleFile("Hola", "txt", "Test 1!!!");
+        assertNull(response);
+    }
+
+    @Test
+    public void testCreateSimpleFile_exceptionDeleteOnExit () {
+        fileUtilities = new FileUtilities();
+        PowerMockito.mockStatic(File.class);
+
+        // Mock for file instance
+        File fileMock = mock(File.class);
+        try {
+            doThrow(Exception.class).when(fileMock).deleteOnExit();
+            PowerMockito.when(File.createTempFile(anyString(), anyString())).thenReturn(fileMock);
+        } catch (Exception e) {
+            System.out.println("Error!: " + e);
+        }
+        File response = fileUtilities.createSimpleFile("Hola", "txt", "Test 1!!!");
+
+        verify(fileMock, times(1)).deleteOnExit();
+        assertNull(response);
     }
 }
