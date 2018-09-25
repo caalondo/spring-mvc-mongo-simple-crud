@@ -13,15 +13,10 @@ public class FileUtilities {
     public File createSimpleFile (String fileName, String fileExtension, String text) {
         try {
             File file = File.createTempFile(fileName, fileExtension);
-
-            System.out.println("FILE: " + file);
-
             file.deleteOnExit();
-
             Writer writer = new OutputStreamWriter(new FileOutputStream(file));
             writer.write(text);
             writer.close();
-            System.out.println("Try/End createSimpleFile");
             return file;
         } catch (Exception e) {
             System.out.println("Error creating temporally file '" + fileName + "." + fileExtension + "'");
