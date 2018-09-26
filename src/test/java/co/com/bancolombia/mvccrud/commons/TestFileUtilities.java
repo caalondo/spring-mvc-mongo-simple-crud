@@ -1,10 +1,14 @@
 package co.com.bancolombia.mvccrud.commons;
 
+import com.amazonaws.services.s3.AmazonS3;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -19,6 +23,9 @@ import java.io.*;
 @RunWith(Enclosed.class)
 public class TestFileUtilities {
 
+    /**
+     * Tests for function 'createSimpleFile'
+     */
     @RunWith(PowerMockRunner.class)
     @PrepareForTest({FileUtilities.class, File.class})
     public static class TestCreateSimpleFile {
@@ -31,13 +38,9 @@ public class TestFileUtilities {
         }
 
         @After
-        public void tearDown() {
+        public void tearDown() {}
 
-        }
-
-        /**
-         * Test when File.createTempFile throws an exception
-         */
+        // Test when File.createTempFile throws an exception
         @Test
         public void testCreateSimpleFile_exceptionCreateTempFile () {
             PowerMockito.mockStatic(File.class);
@@ -52,9 +55,7 @@ public class TestFileUtilities {
             assertNull(response);
         }
 
-        /**
-         * Test when deleteOnExit throws an exception
-         */
+        // Test when deleteOnExit throws an exception
         @Test
         public void testCreateSimpleFile_exceptionDeleteOnExit () {
             PowerMockito.mockStatic(File.class);
@@ -73,9 +74,7 @@ public class TestFileUtilities {
             assertNull(response);
         }
 
-        /**
-         * Test when write throws an exception
-         */
+        // Test when write throws an exception
         @Test
         public void testCreateSimpleFile_exceptionWrite () {
             PowerMockito.mockStatic(OutputStreamWriter.class);
@@ -92,9 +91,7 @@ public class TestFileUtilities {
             }
         }
 
-        /**
-         * Test when everything is ok
-         */
+        // Test when everything is ok
         @Test
         public void testCreateSimpleFile_worksOk () {
             PowerMockito.mockStatic(OutputStreamWriter.class);
@@ -115,13 +112,34 @@ public class TestFileUtilities {
         }
     }
 
+    /**
+     * Tests for function 'checkIfFileExists'
+     */
+    @RunWith(MockitoJUnitRunner.class)
     public static class TestCheckIfFileExists {
 
-        @Test
-        public void testCheckIfFileExists_exceptionCreateAWSClient () {
-            boolean response = FileUtilities.checkIfFileExists("objectxyz");
-            System.out.println("response: " + response);
-        }
+        @InjectMocks
+        private FileUtilities fileUtilities;
 
+        @Mock
+        private GlobalUtilities globalUtilitiesMock;
+
+        @Before
+        public void setUp() {}
+
+        @After
+        public void tearDown() {}
+
+        // Test methods called correctly
+        @Test
+        public void testCheckIfFileExists_methodsAreCalled () {
+            AmazonS3 amazonS3Mock = mock(AmazonS3.class);
+            doReturn(true).when(amazonS3Mock).doesObjectExist(anyString(), anyString());
+            doReturn(amazonS3Mock).when(globalUtilitiesMock).createAWSClient();
+
+            fileUtilities.checkIfFileExists("objectxyz");
+            verify(globalUtilitiesMock, times(1)).createAWSClient();
+            verify(amazonS3Mock, times(1)).doesObjectExist(anyString(), anyString());
+        }
     }
 }

@@ -13,8 +13,8 @@ public class GlobalUtilities {
     private ProfileCredentialsProvider provider;
     public static final String bucketName = "test-c4rl05";
 
-    public GlobalUtilities (ProfileCredentialsProvider provider) {
-        this.provider = provider;
+    public GlobalUtilities () {
+        this.provider = new ProfileCredentialsProvider();
     }
 
     public AmazonS3 createAWSClient () {

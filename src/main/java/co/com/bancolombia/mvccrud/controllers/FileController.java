@@ -28,7 +28,7 @@ public class FileController {
     @RequestMapping(value = {"/{objectKey}"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String readFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
 
-        GlobalUtilities globalUtilities = new GlobalUtilities(new ProfileCredentialsProvider());
+        GlobalUtilities globalUtilities = new GlobalUtilities();
         AmazonS3 s3 = globalUtilities.createAWSClient();
 
         // Getting object from S3 bucket
@@ -98,7 +98,7 @@ public class FileController {
     )
     public String createFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
 
-        GlobalUtilities globalUtilities = new GlobalUtilities(new ProfileCredentialsProvider());
+        GlobalUtilities globalUtilities = new GlobalUtilities();
         AmazonS3 s3 = globalUtilities.createAWSClient();
         String bucketName = GlobalUtilities.bucketName;
 
@@ -110,7 +110,7 @@ public class FileController {
         FileUtilities fileUtilities = new FileUtilities();
         File file = fileUtilities.createSimpleFile(objectKey, ".txt", textFile);
 
-        if (!FileUtilities.checkIfFileExists(objectKey)) {
+        if (!fileUtilities.checkIfFileExists(objectKey)) {
             try {
                 s3.putObject(new PutObjectRequest(bucketName, objectKey, file));
                 JSONObject jsonFile = new JSONObject();
@@ -153,7 +153,7 @@ public class FileController {
 
     @RequestMapping(value = "/{objectKey}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public String replaceFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
-        GlobalUtilities globalUtilities = new GlobalUtilities(new ProfileCredentialsProvider());
+        GlobalUtilities globalUtilities = new GlobalUtilities();
         AmazonS3 s3 = globalUtilities.createAWSClient();
         String bucketName = GlobalUtilities.bucketName;
 
@@ -165,7 +165,7 @@ public class FileController {
         FileUtilities fileUtilities = new FileUtilities();
         File file = fileUtilities.createSimpleFile(objectKey, ".txt", textFile);
 
-        if (FileUtilities.checkIfFileExists(objectKey)) {
+        if (fileUtilities.checkIfFileExists(objectKey)) {
             try {
                 s3.putObject(new PutObjectRequest(bucketName, objectKey, file));
                 JSONObject jsonFile = new JSONObject();
@@ -209,11 +209,12 @@ public class FileController {
     @RequestMapping(value = "/{objectKey}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String deleteFile (@PathVariable String objectKey, HttpServletResponse httpResponse) {
 
-        GlobalUtilities globalUtilities = new GlobalUtilities(new ProfileCredentialsProvider());
+        GlobalUtilities globalUtilities = new GlobalUtilities();
         AmazonS3 s3 = globalUtilities.createAWSClient();
         String bucketName = GlobalUtilities.bucketName;
 
-        if (FileUtilities.checkIfFileExists(objectKey)) {
+        FileUtilities fileUtilities = new FileUtilities();
+        if (fileUtilities.checkIfFileExists(objectKey)) {
             try {
                 s3.deleteObject(bucketName, objectKey);
                 JSONObject jsonBody = new JSONObject();

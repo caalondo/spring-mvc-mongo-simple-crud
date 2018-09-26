@@ -10,6 +10,12 @@ import java.io.Writer;
 
 public class FileUtilities {
 
+    private GlobalUtilities globalUtilities;
+
+    public FileUtilities () {
+        globalUtilities = new GlobalUtilities();
+    }
+
     public File createSimpleFile (String fileName, String fileExtension, String text) {
         try {
             File file = File.createTempFile(fileName, fileExtension);
@@ -24,13 +30,12 @@ public class FileUtilities {
         }
     }
 
-    public static boolean checkIfFileExists (String objectKey) {
-        GlobalUtilities globalUtilities = new GlobalUtilities(new ProfileCredentialsProvider());
+    public boolean checkIfFileExists (String objectKey) {
         AmazonS3 s3 = globalUtilities.createAWSClient();
+        String bucketName = GlobalUtilities.bucketName;
         System.out.println("S3: " + s3);
-        return true;
-//        String bucketName = GlobalUtilities.bucketName;
-//        return s3.doesObjectExist(bucketName, objectKey);
+        return s3.doesObjectExist(bucketName, objectKey);
+//        return true;
     }
 
 }
