@@ -35,7 +35,6 @@ public class FileUtilities {
         String bucketName = GlobalUtilities.bucketName;
         System.out.println("S3: " + s3);
         return s3.doesObjectExist(bucketName, objectKey);
-//        return true;
     }
 
 }

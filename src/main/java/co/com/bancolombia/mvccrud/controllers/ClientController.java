@@ -24,17 +24,24 @@ public class ClientController {
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getAllClients (HttpServletResponse http_resp) {
-        List<ITypeListResponse> listR = Lists.newArrayList(clientRepository.findAll());
-        ApiResponse res = new ApiResponse("200", "OK", listR);
+
+        System.err.println("====>>> [1] getAllClients()!!!");
+
+        System.out.println("====>>> [2] getAllClients(): " + clientRepository.findAll());
+
+//        List<ITypeListResponse> listR = Lists.newArrayList(clientRepository.findAll());
+//        ApiResponse res = new ApiResponse("200", "OK", listR);
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            http_resp.setStatus(HttpServletResponse.SC_ACCEPTED);
-            return objectMapper.writeValueAsString(res);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            http_resp.setStatus(500);
+//        try {
+            System.err.println("====>>> [3] getAllClients()!!!");
+            http_resp.setStatus(HttpServletResponse.SC_OK);
+//            return objectMapper.writeValueAsString(res);
             return "";
-        }
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//            http_resp.setStatus(500);
+//            return "";
+//        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

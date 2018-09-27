@@ -42,14 +42,9 @@ public class TestFileUtilities {
 
         // Test when File.createTempFile throws an exception
         @Test
-        public void testCreateSimpleFile_exceptionCreateTempFile () {
+        public void testCreateSimpleFile_exceptionCreateTempFile () throws Exception {
             PowerMockito.mockStatic(File.class);
-
-            try {
-                PowerMockito.when(File.createTempFile(anyString(), anyString())).thenThrow(Exception.class);
-            } catch (Exception e) {
-                System.out.println("Error!");
-            }
+            PowerMockito.when(File.createTempFile(anyString(), anyString())).thenThrow(Exception.class);
 
             File response = fileUtilities.createSimpleFile("Hola", "txt", "Test 1!!!");
             assertNull(response);
@@ -57,17 +52,14 @@ public class TestFileUtilities {
 
         // Test when deleteOnExit throws an exception
         @Test
-        public void testCreateSimpleFile_exceptionDeleteOnExit () {
+        public void testCreateSimpleFile_exceptionDeleteOnExit () throws Exception {
             PowerMockito.mockStatic(File.class);
 
             // Mock for file instance
             File fileMock = mock(File.class);
-            try {
-                doThrow(Exception.class).when(fileMock).deleteOnExit();
-                PowerMockito.when(File.createTempFile(anyString(), anyString())).thenReturn(fileMock);
-            } catch (Exception e) {
-                System.out.println("Error!: " + e);
-            }
+            doThrow(Exception.class).when(fileMock).deleteOnExit();
+            PowerMockito.when(File.createTempFile(anyString(), anyString())).thenReturn(fileMock);
+
             File response = fileUtilities.createSimpleFile("Hola", "txt", "Test 1!!!");
 
             verify(fileMock, times(1)).deleteOnExit();
@@ -76,39 +68,31 @@ public class TestFileUtilities {
 
         // Test when write throws an exception
         @Test
-        public void testCreateSimpleFile_exceptionWrite () {
+        public void testCreateSimpleFile_exceptionWrite () throws Exception {
             PowerMockito.mockStatic(OutputStreamWriter.class);
             OutputStreamWriter writerMock = mock(OutputStreamWriter.class);
 
-            try {
-                doThrow(Exception.class).when(writerMock).write(anyString());
-                PowerMockito.whenNew(OutputStreamWriter.class).withArguments(any(OutputStream.class)).thenReturn(writerMock);
-                File response = fileUtilities.createSimpleFile("Hola", "txt", "Test 1!!!");
-                verify(writerMock, times(1)).write(anyString());
-                assertNull(response);
-            } catch (Exception e) {
-                System.out.println("Error!: " + e);
-            }
+            doThrow(Exception.class).when(writerMock).write(anyString());
+            PowerMockito.whenNew(OutputStreamWriter.class).withArguments(any(OutputStream.class)).thenReturn(writerMock);
+            File response = fileUtilities.createSimpleFile("Hola", "txt", "Test 1!!!");
+            verify(writerMock, times(1)).write(anyString());
+            assertNull(response);
         }
 
         // Test when everything is ok
         @Test
-        public void testCreateSimpleFile_worksOk () {
+        public void testCreateSimpleFile_worksOk () throws Exception {
             PowerMockito.mockStatic(OutputStreamWriter.class);
             OutputStreamWriter writerMock = mock(OutputStreamWriter.class);
 
-            try {
-                doNothing().when(writerMock).write(anyString());
-                doNothing().when(writerMock).close();
-                PowerMockito.whenNew(OutputStreamWriter.class).withArguments(any(OutputStream.class)).thenReturn(writerMock);
+            doNothing().when(writerMock).write(anyString());
+            doNothing().when(writerMock).close();
+            PowerMockito.whenNew(OutputStreamWriter.class).withArguments(any(OutputStream.class)).thenReturn(writerMock);
 
-                File response = fileUtilities.createSimpleFile("Hola", "txt", "Test 1!!!");
-                verify(writerMock, times(1)).write(anyString());
-                verify(writerMock, times(1)).close();
-                assertThat(response, instanceOf(File.class));
-            } catch (Exception e) {
-                System.out.println("Error!: " + e);
-            }
+            File response = fileUtilities.createSimpleFile("Hola", "txt", "Test 1!!!");
+            verify(writerMock, times(1)).write(anyString());
+            verify(writerMock, times(1)).close();
+            assertThat(response, instanceOf(File.class));
         }
     }
 
