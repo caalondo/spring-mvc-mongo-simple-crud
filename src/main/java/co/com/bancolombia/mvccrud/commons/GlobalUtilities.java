@@ -15,12 +15,14 @@ public class GlobalUtilities {
 
     public GlobalUtilities () {
         this.provider = new ProfileCredentialsProvider();
+        System.out.println("1. PROVIDER: " + this.provider);
     }
 
     public AmazonS3 createAWSClient () {
         // Getting aws credentials
         AWSCredentials credentials;
         try {
+            System.out.println("2. PROVIDER: " + provider);
             credentials = provider.getCredentials();
         } catch (Exception e) {
             throw new AmazonClientException("Error getting aws credentials: " + e);
